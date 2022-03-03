@@ -1,0 +1,6 @@
+ID | ADDRESS         | LISTING_TYPE | TITLE                          | DESCRIPTION                    | PRICE | NEIGHBORHOOD_ID | HOST_ID | CREATED_AT              | UPDATED_AT             
+---|-----------------|--------------|--------------------------------|--------------------------------|-------|-----------------|---------|-------------------------|------------------------
+1  | 123 Main Street | private room | Beautiful Apartment on Main... | My apartment is great. ther... | 50.0  | 1               | 1       | 2022-03-03 18:49:37     | 2022-03-03 18:49:37    
+2  | 6 Maple Street  | shared room  | Shared room in apartment       | shared a room with me becau... | 15.0  | 2               | 2       | 2022-03-03 18:49:37     | 2022-03-03 18:49:37    
+3  | 44 Ridge Lane   | whole house  | Beautiful Home on Mountain     | Whole house for rent on mou... | 200.0 | 3               | 3       | 2022-03-03 18:49:37     | 2022-03-03 18:49:37    
+4  | 4782 Yaya Lane  | private room | Beautiful Room in awesome h... | Art collective hosue.          | 400.0 | 4               | 3       | 2022-03-03 18:49:37     | 2022-03-03 18:49:37    
