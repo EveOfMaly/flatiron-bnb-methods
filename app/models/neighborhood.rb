@@ -4,8 +4,7 @@ class Neighborhood < ActiveRecord::Base
 
   include ReservesModules
 
-
-  def neighbor_openenings(start_date, end_date)
+  def neighborhood_openings(start_date, end_date)
     openings(start_date, end_date)
   end
 

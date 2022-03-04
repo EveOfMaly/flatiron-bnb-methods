@@ -3,6 +3,9 @@ class City < ActiveRecord::Base
   has_many :listings, :through => :neighborhoods
   include ReservesModules
 
+  def city_openings(start_date, end_date)
+    openings(start_date, end_date)
+  end
 
 end
 
