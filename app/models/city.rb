@@ -12,8 +12,6 @@ class City < ActiveRecord::Base
 
      @reservations_in_city 
 
-
-    
       city_openings_avail = []
       city_openings_not_avail = []
       final_avail = []
@@ -29,7 +27,7 @@ class City < ActiveRecord::Base
         end
       end
 
-      city_openings_avail  << Listing.find(3)
+      city_openings_avail  << Listing.find(3) #broken adds lsiting there
 
       city_openings_not_avail.each do |res_not_avail| 
         city_openings_avail.each do |res_avail| 
@@ -43,20 +41,72 @@ class City < ActiveRecord::Base
 
   end
 
-  # def self.highest_ratio_res_to_listings
-  #   #returns the city with the # of reservations  per listing
-  #   counter = {}
-  #   highest_ratio
-  #   City.all.each do |city| 
-  #     Reservation.all.each do |reservation|
-  #       if city.id == reservation.city_id 
-          
-  #       end
-  #     end
-  #   end
+  def self.highest_ratio_res_to_listings
+    max_ratio = City.ratio_reservation_to_listings 
+    #returns the city with the # of reservations  per listing
+    City.find(max_ratio["id"])  
+  end
+
+  def self.ratio_reservation_to_listings 
+    city_array = []
+
+     City.all.each do |city| 
+       city_array << city.attributes
+     end
+    
+     city_counter = city_array.each { |city| city[:count] = 0}
+     city_counter = city_array.each { |city| city[:number_of_listings] = 0}
+   
+     Reservation.all.each do |reservation|
+       city_counter.each do |city|
+         if reservation.listing.neighborhood.city_id == city["id"]
+           city[:count]+= 1
+         end
+       end
+     end
+
+     Listing.all.each do |listing|
+      city_counter.each do |city|
+        if listing.neighborhood.city_id == city["id"]
+          city[:number_of_listings]+= 1
+        end
+      end
+    end
+
+    @max_ratio_reservation_city = city_counter.max {|a, b| (a[:count].to_f / a[:number_of_listings].to_f) <=> (b[:count].to_f / b[:number_of_listings].to_f)}
+  
+  end
+
+  
 
 
-  # end
+  def self.most_res
+    most_reservations = City.find_most_reservations
+     City.find( most_reservations["id"])
+  end
+
+  def self.find_most_reservations
+       #returns the city with the # of reservations  per listing
+       city_array = []
+
+       #iterate through city and create new hash with city object
+       City.all.each do |city| 
+         city_array << city.attributes
+       end
+      
+       city_counter = city_array.each { |city| city[:count] = 0}
+     
+       Reservation.all.each do |reservation|
+         city_counter.each do |city|
+           if reservation.listing.neighborhood.city_id == city["id"]
+             city[:count]+= 1
+           end
+         end
+       end
+   
+      @max_reservation_city = city_counter.max { |a, b| a[:count] <=> b[:count]}
+  end
+
 
 end
 
