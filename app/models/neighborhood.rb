@@ -9,3 +9,4 @@ class Neighborhood < ActiveRecord::Base
   end
 
 end
+

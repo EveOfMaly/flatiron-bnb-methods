@@ -32,7 +32,7 @@ module ReservesModules
                 end
             end
         end
-
+    #prints out a array with collection if available and empty if not.
         final_avail
     end
     
@@ -41,7 +41,7 @@ module ReservesModules
             max_ratio = self.ratio_reservation_to_listings 
             self.find(max_ratio["id"])  
         end
-
+        
         def ratio_reservation_to_listings 
             array = []
         
@@ -49,63 +49,69 @@ module ReservesModules
                array << city.attributes
              end
             
-        
+            
 
-             counter = city_array.each { |city| city[:count] = 0}
-             counter = city_array.each { |city| city[:number_of_listings] = 0}
-             
-             binding.pry
-             
+             counter = array.each { |city| city[:count] = 0}
+             counter = array.each { |city| city[:number_of_listings] = 0}
+            
+            
+
              Reservation.all.each do |reservation|
-                counter.each do |city|
-                 if reservation.listing.neighborhood.city_id == city["id"]
-                   city[:count]+= 1
+              counter.each do |object|
+                if reservation.listing.neighborhood.city_id == object["id"]
+                   object[:count]+= 1
                  end
                end
              end
+
+         
         
              Listing.all.each do |listing|
-              counter.each do |city|
-                if listing.neighborhood.city_id == city["id"]
-                  city[:number_of_listings]+= 1
+              counter.each do |object|
+                if listing.neighborhood.city_id == object["id"]
+                  object[:number_of_listings]+= 1
+                end
+              end
+            end      
+            @max_ratio_reservation = counter.max_by {|k| k[:count].nonzero?.to_f || 1 / k[:number_of_listings].nonzero?.to_f || 1}
+          end
+  
+
+
+          def most_res
+              most_reservations = self.find_most_reservations
+                self.find( most_reservations["id"])
+          end
+          
+    
+        def find_most_reservations
+            array = []
+          
+            self.all.each do |city| 
+              array << city.attributes
+            end
+          
+          
+
+            counter = array.each { |city| city[:count] = 0}
+            counter = array.each { |city| city[:number_of_listings] = 0}
+        
+    
+            Reservation.all.each do |reservation|
+              counter.each do |object|
+                if reservation.listing.neighborhood.city_id == object["id"]
+                  object[:count]+= 1
                 end
               end
             end
-        
-            @max_ratio_reservation_city = counter.max {|a, b| (a[:count].to_f / a[:number_of_listings].to_f) <=> (b[:count].to_f / b[:number_of_listings].to_f)}
+            
+  
+            @max_reservation_city = counter.max_by {|k| k[:count].nonzero?.to_f || 1 / k[:number_of_listings].nonzero?.to_f || 1}
+          
+          end
         end
-    end
-
-    #     def most_res
-    #         most_reservations = self.find_most_reservations
-    #          self.find( most_reservations["id"])
-    #     end
         
-    #     def find_most_reservations
-    #         #returns the city with the # of reservations  per listing
-    #         array = []
-    
-    #         #iterate through city and create new hash with city object
-    #         self.all.each do |object| 
-    #             array << city.attributes
-    #         end
-        
-    #         counter = array.each { |city| city[:count] = 0}
-        
-    #         Reservation.all.each do |reservation|
-    #             counter.each do |city|
-    #                 if reservation.listing.neighborhood.city_id == city["id"]
-    #                 city[:count]+= 1
-    #                 end
-    #             end
-    #         end
-        
-    #         @max_reservation_city = city_counter.max { |a, b| a[:count] <=> b[:count]}
-    #     end     
-    # end
-end
-
-    
+      end
       
     
       
